@@ -48,7 +48,6 @@ private:
 	void ResumeGame();
 	void ClearMovementLog();
 
-	// Log yaw values to file
-	FTimerHandle MovementLogTimerHandle;
+		FTimerHandle MovementLogTimerHandle;
 	float MovementLogInterval = 0.5f;
 };

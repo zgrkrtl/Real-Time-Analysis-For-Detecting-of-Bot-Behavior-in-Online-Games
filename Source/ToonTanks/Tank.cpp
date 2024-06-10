@@ -80,13 +80,11 @@ void ATank::LogMovementData()
 
     FString LogFilePath = FPaths::ProjectDir() + TEXT("MovementLog.csv");
 
-    // Check if the file exists and create a new one if it doesn't
     if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*LogFilePath))
     {
         FFileHelper::SaveStringToFile(TEXT("Timestamp,PosX,PosY,PosZ,Pitch,Yaw,Roll\n"), *LogFilePath);
     }
 
-    // Append the log entry to the file
     FFileHelper::SaveStringToFile(LogEntry, *LogFilePath, FFileHelper::EEncodingOptions::AutoDetect, &IFileManager::Get(), FILEWRITE_Append);
 }
 
@@ -99,20 +97,15 @@ void ATank::DetectAnomaly()
     {
         float prevYawValue = GetActorRotation().Yaw;
         int32 anomalyCount = 0;
-        int32 consecCount = 0; // Move declaration outside the loop
-        // Loop through each line in the log file
+        int32 consecCount = 0;
         for (const FString &LogLine : LogLines)
         {
-            // Split the line into individual values
+
             TArray<FString> LogValues;
             LogLine.ParseIntoArray(LogValues, TEXT(","), true);
 
-            // Ensure the line has enough values
+            float YawValue = FCString::Atof(*LogValues[5]);
 
-            // Extract the yaw value
-            float YawValue = FCString::Atof(*LogValues[5]); // Assuming yaw is the 6th value (index 5)
-
-            // Do something with the yaw value
             if (YawValue == prevYawValue)
             {
                 consecCount++;
@@ -123,18 +116,18 @@ void ATank::DetectAnomaly()
                     {
                         Speed = 0;
                         TurnRate = 0;
-                        ShowPopup();
-                        return; // Exit the function when anomalyCount is 5
+                        UE_LOG(LogTemp, Warning, TEXT("MOVEMENT STOPPED POTENTIAL BOT BEHAVIOUR!"));
+                        return;
                     }
                     consecCount = 0;
                 }
             }
             else
             {
-                consecCount = 0; // Reset consecCount if YawValue changes
+                consecCount = 0;
             }
             prevYawValue = YawValue;
-            // For example, print it to the screen
+
             UE_LOG(LogTemp, Warning, TEXT("Yaw Value: %f"), YawValue);
         }
     }
@@ -147,6 +140,7 @@ void ATank::ResumeGame()
 {
     Speed = 700.f;
     TurnRate = 120.f;
+    UE_LOG(LogTemp, Display, TEXT("VERIFIED AS HUMAN YOU CAN CONTINUE..."));
     ClearMovementLog();
 }
 
@@ -154,9 +148,5 @@ void ATank::ClearMovementLog()
 {
     FString LogFilePath = FPaths::ProjectDir() + TEXT("MovementLog.csv");
 
-    // Clear the contents of the file
     FFileHelper::SaveStringToFile(TEXT(""), *LogFilePath);
-}
-void ATank::ShowPopup()
-{
 }
