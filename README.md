@@ -28,3 +28,6 @@ anomaly flagging
 
 Findings documented in a LaTeX-formatted research paper covering 
 methodology, implementation, and results.
+
+---
+*Documentation structured and formatted with the assistance of generative AI.*
