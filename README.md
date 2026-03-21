@@ -8,7 +8,7 @@ university security course project.
 
 Bots in online games exhibit predictable, non-human movement patterns. 
 This project applies behavioral analysis to detect these anomalies in 
-real time — concepts directly transferable to network intrusion detection 
+real time concepts directly transferable to network intrusion detection 
 and SOC anomaly analysis.
 
 ## Implementation
